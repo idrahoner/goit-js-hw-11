@@ -3,26 +3,33 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const lightBox = new SimpleLightbox('.gallery a');
 
-export function renderMarkup(element, array) {
-  element.insertAdjacentHTML('beforeend', createGallery(array));
-  lightBox.refresh();
-}
+export function markupGenerator(DOMelement) {
+  return {
+    element: DOMelement,
 
-function createGallery(array) {
-  return array.map(createCard).join('');
-}
+    clearMarkup() {
+      this.element.innerHTML = '';
+    },
 
-function createCard(element) {
-  const {
-    webformatURL,
-    largeImageURL,
-    tags,
-    likes,
-    views,
-    comments,
-    downloads,
-  } = element;
-  return `
+    renderMarkup(array) {
+      this.element.insertAdjacentHTML('beforeend', this.createGallery(array));
+    },
+
+    createGallery(array) {
+      return array.map(this.createCard).join('');
+    },
+
+    createCard(element) {
+      const {
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      } = element;
+      return `
         <div class="photo-card">
             <a href=${largeImageURL}>
                 <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="200" />
@@ -47,10 +54,8 @@ function createCard(element) {
             </div>
         </div>
     `;
-}
-
-export function clearMarkup(element) {
-  element.innerHTML = '';
+    },
+  };
 }
 
 export function buttonGenerator(button) {
@@ -72,6 +77,7 @@ export function buttonGenerator(button) {
     },
 
     unlock() {
+      console.log('element: ', this.element, 'text: ', this.content);
       this.element.textContent = this.content;
       this.element.removeAttribute('disabled');
     },

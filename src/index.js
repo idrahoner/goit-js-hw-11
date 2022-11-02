@@ -1,12 +1,14 @@
 import { Notify } from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
 
-import { renderMarkup, clearMarkup, buttonGenerator } from './js/markup';
+import { markupGenerator, buttonGenerator } from './js/markup';
 
 import request from './js/request-service';
 
 const formEl = document.querySelector('#search-form');
 const galleryEl = document.querySelector('.gallery');
+
+const galleryMarkup = markupGenerator(galleryEl);
 
 const loadMoreButton = buttonGenerator(document.querySelector('.load-more'));
 const submitButton = buttonGenerator(formEl.submit);
@@ -39,20 +41,19 @@ function onFormSuccess({ hits, totalHits } = {}) {
   Notify.success(`Hooray! We found ${totalHits} images.`);
   formEl.searchQuery.value = '';
 
-  renderMarkup(galleryEl, hits);
+  galleryMarkup.renderMarkup(hits);
   loadMoreButton.show();
 }
 
 function onButtonClick() {
   request.increasePage();
 
-  console.log(request.getURL());
   loadMoreButton.lock();
   request.makeRequest().then(onLoadMoreButtonSuccess).finally(unlockButtons);
 }
 
 function onLoadMoreButtonSuccess({ hits, totalHits } = {}) {
-  renderMarkup(galleryEl, hits);
+  galleryMarkup.renderMarkup(hits);
 
   const photoCards = document.querySelectorAll('.photo-card');
 
@@ -68,7 +69,7 @@ function unlockButtons() {
 }
 
 function toInitialState() {
-  clearMarkup(galleryEl);
+  galleryMarkup.clearMarkup();
   loadMoreButton.hide();
   request.allReset();
 }
