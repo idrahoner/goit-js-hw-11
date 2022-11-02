@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
   url: 'https://pixabay.com/api/',
   key: '30965051-be301043694ab243532f6a4d6',
@@ -35,5 +37,9 @@ export default {
       `&image_type=${this.image_type}&orientation=${this.orientation}&safesearch=${this.safesearch}` +
       `&page=${this.page}&per_page=${this.per_page}`
     );
+  },
+
+  makeRequest() {
+    return axios(this.getURL()).then(({ data }) => data);
   },
 };

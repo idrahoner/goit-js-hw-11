@@ -1,8 +1,6 @@
 import { Notify } from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
 
-import axios from 'axios';
-
 import { renderMarkup, clearMarkup, buttonGenerator } from './js/markup';
 
 import request from './js/request-service';
@@ -18,32 +16,18 @@ loadMoreButton.element.addEventListener('click', onButtonClick);
 
 function onFormSubmit(event) {
   event.preventDefault();
+  toInitialState();
 
-  const searchRequest = formEl.searchQuery.value.trim();
-
-  clearMarkup(galleryEl);
-  loadMoreButton.hide();
-  request.allReset();
+  const searchRequest = event.currentTarget.searchQuery.value.trim();
 
   if (!searchRequest) {
     return;
   }
+
   submitButton.lock();
 
   request.setQuery(searchRequest);
-  makeRequest(onFormSuccess);
-}
-function makeRequest(onSuccess) {
-  axios
-    .get(request.getURL())
-    .then(({ data }) => {
-      onSuccess(data);
-    })
-    .catch(console.log)
-    .finally(() => {
-      submitButton.unlock();
-      loadMoreButton.unlock();
-    });
+  request.makeRequest().then(onFormSuccess).finally(unlockButtons);
 }
 
 function onFormSuccess({ hits, totalHits } = {}) {
@@ -64,10 +48,10 @@ function onButtonClick() {
 
   console.log(request.getURL());
   loadMoreButton.lock();
-  makeRequest(onLoadMoreButtonSuccess);
+  request.makeRequest().then(onLoadMoreButtonSuccess).finally(unlockButtons);
 }
 
-function onLoadMoreButtonSuccess({ hits } = {}) {
+function onLoadMoreButtonSuccess({ hits, totalHits } = {}) {
   renderMarkup(galleryEl, hits);
 
   const photoCards = document.querySelectorAll('.photo-card');
@@ -76,4 +60,15 @@ function onLoadMoreButtonSuccess({ hits } = {}) {
     loadMoreButton.hide();
     Notify.info("We're sorry, but you've reached the end of search results.");
   }
+}
+
+function unlockButtons() {
+  loadMoreButton.unlock();
+  submitButton.unlock();
+}
+
+function toInitialState() {
+  clearMarkup(galleryEl);
+  loadMoreButton.hide();
+  request.allReset();
 }
