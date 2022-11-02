@@ -39,12 +39,20 @@ export default {
     );
   },
 
-  startRequest(callback, button) {
-    button.lock();
-    axios(this.getURL())
-      .then(({ data }) => callback(data))
-      .finally(() => {
-        button.unlock();
-      });
+  async makeRequest() {
+    const { data } = await axios(this.getURL());
+    return data;
+  },
+
+  async responseHandler(callback) {
+    const response = await this.makeRequest();
+    callback(response);
+  },
+
+  renderRequestProcess(callback, buttonPressed) {
+    buttonPressed.lock();
+    this.responseHandler(callback).finally(() => {
+      buttonPressed.unlock();
+    });
   },
 };

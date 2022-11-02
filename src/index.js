@@ -1,17 +1,8 @@
 import { Notify } from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
 
-import { markupGenerator, buttonGenerator } from './js/markup';
-
 import request from './js/request-service';
-
-const formEl = document.querySelector('#search-form');
-const galleryEl = document.querySelector('.gallery');
-
-const galleryMarkup = markupGenerator(galleryEl);
-
-const loadMoreButton = buttonGenerator(document.querySelector('.load-more'));
-const submitButton = buttonGenerator(formEl.submit);
+import { formEl, galleryMarkup, loadMoreButton, submitButton } from './js/refs';
 
 formEl.addEventListener('submit', onFormSubmit);
 loadMoreButton.element.addEventListener('click', onButtonClick);
@@ -27,7 +18,12 @@ function onFormSubmit(event) {
   }
 
   request.setQuery(searchQuery);
-  request.startRequest(onFormSuccess, submitButton);
+  request.renderRequestProcess(onFormSuccess, submitButton);
+}
+
+function onButtonClick() {
+  request.increasePage();
+  request.renderRequestProcess(onLoadMoreBtnSuccess, loadMoreButton);
 }
 
 function onFormSuccess({ hits, totalHits } = {}) {
@@ -43,12 +39,7 @@ function onFormSuccess({ hits, totalHits } = {}) {
   loadMoreButton.show();
 }
 
-function onButtonClick() {
-  request.increasePage();
-  request.startRequest(onLoadMoreButtonSuccess, loadMoreButton);
-}
-
-function onLoadMoreButtonSuccess({ hits, totalHits } = {}) {
+function onLoadMoreBtnSuccess({ hits, totalHits } = {}) {
   galleryMarkup.renderMarkup(hits);
 
   const photoCards = document.querySelectorAll('.photo-card');
