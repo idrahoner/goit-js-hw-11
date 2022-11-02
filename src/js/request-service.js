@@ -39,7 +39,12 @@ export default {
     );
   },
 
-  makeRequest() {
-    return axios(this.getURL()).then(({ data }) => data);
+  startRequest(callback, button) {
+    button.lock();
+    axios(this.getURL())
+      .then(({ data }) => callback(data))
+      .finally(() => {
+        button.unlock();
+      });
   },
 };

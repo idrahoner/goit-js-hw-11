@@ -13,6 +13,7 @@ export function markupGenerator(DOMelement) {
 
     renderMarkup(array) {
       this.element.insertAdjacentHTML('beforeend', this.createGallery(array));
+      lightBox.refresh();
     },
 
     createGallery(array) {
@@ -77,7 +78,6 @@ export function buttonGenerator(button) {
     },
 
     unlock() {
-      console.log('element: ', this.element, 'text: ', this.content);
       this.element.textContent = this.content;
       this.element.removeAttribute('disabled');
     },

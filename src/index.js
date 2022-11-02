@@ -20,16 +20,14 @@ function onFormSubmit(event) {
   event.preventDefault();
   toInitialState();
 
-  const searchRequest = event.currentTarget.searchQuery.value.trim();
+  const searchQuery = event.currentTarget.searchQuery.value.trim();
 
-  if (!searchRequest) {
+  if (!searchQuery) {
     return;
   }
 
-  submitButton.lock();
-
-  request.setQuery(searchRequest);
-  request.makeRequest().then(onFormSuccess).finally(unlockButtons);
+  request.setQuery(searchQuery);
+  request.startRequest(onFormSuccess, submitButton);
 }
 
 function onFormSuccess({ hits, totalHits } = {}) {
@@ -38,8 +36,8 @@ function onFormSuccess({ hits, totalHits } = {}) {
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
-  Notify.success(`Hooray! We found ${totalHits} images.`);
   formEl.searchQuery.value = '';
+  Notify.success(`Hooray! We found ${totalHits} images.`);
 
   galleryMarkup.renderMarkup(hits);
   loadMoreButton.show();
@@ -47,9 +45,7 @@ function onFormSuccess({ hits, totalHits } = {}) {
 
 function onButtonClick() {
   request.increasePage();
-
-  loadMoreButton.lock();
-  request.makeRequest().then(onLoadMoreButtonSuccess).finally(unlockButtons);
+  request.startRequest(onLoadMoreButtonSuccess, loadMoreButton);
 }
 
 function onLoadMoreButtonSuccess({ hits, totalHits } = {}) {
@@ -61,11 +57,6 @@ function onLoadMoreButtonSuccess({ hits, totalHits } = {}) {
     loadMoreButton.hide();
     Notify.info("We're sorry, but you've reached the end of search results.");
   }
-}
-
-function unlockButtons() {
-  loadMoreButton.unlock();
-  submitButton.unlock();
 }
 
 function toInitialState() {
