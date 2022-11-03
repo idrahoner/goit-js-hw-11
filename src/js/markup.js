@@ -39,63 +39,30 @@ export function createMarkupObj(DOMelement) {
         downloads,
       } = element;
       return `
-        <div class="photo-card">
-            <a href=${largeImageURL}>
-                <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="200" />
-            </a>
-            <div class="info">
-                <p class="info-item">
-                    <b>Likes</b>
-                    ${likes}
-                </p>
-                <p class="info-item">
-                    <b>Views</b>
-                    ${views}
-                </p>
-                <p class="info-item">
-                    <b>Comments</b>
-                    ${comments}
-                </p>
-                <p class="info-item">
-                    <b>Downloads</b>
-                    ${downloads}
-                </p>
-            </div>
-        </div>
-    `;
-    },
-  };
-}
-
-export function createButtonObj(button) {
-  return {
-    element: button,
-    content: button.textContent,
-
-    show() {
-      this.element.classList.remove('is-hidden');
-    },
-
-    hide() {
-      this.element.classList.add('is-hidden');
-    },
-
-    lock() {
-      this.element.textContent = 'Loading...';
-      this.element.disabled = 'true';
-    },
-
-    unlock() {
-      this.element.textContent = this.content;
-      this.element.removeAttribute('disabled');
-    },
-
-    check(condition) {
-      if (condition) {
-        this.hide();
-      } else {
-        this.show();
-      }
+      <div class="photo-card">
+      <a href=${largeImageURL}>
+      <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="200" />
+      </a>
+      <div class="info">
+      <p class="info-item">
+      <b>Likes</b>
+      ${likes}
+      </p>
+      <p class="info-item">
+      <b>Views</b>
+      ${views}
+      </p>
+      <p class="info-item">
+      <b>Comments</b>
+      ${comments}
+      </p>
+      <p class="info-item">
+      <b>Downloads</b>
+      ${downloads}
+      </p>
+      </div>
+      </div>
+      `;
     },
   };
 }

@@ -8,7 +8,7 @@ export default {
   orientation: 'horizontal',
   safesearch: true,
   page: 1,
-  per_page: 20,
+  per_page: 40,
 
   setQuery(newQuery) {
     this.query += newQuery;
@@ -45,8 +45,13 @@ export default {
   },
 
   async responseHandler(callback) {
-    const response = await this.makeRequest();
-    callback(response);
+    try {
+      const response = await this.makeRequest();
+      callback(response);
+    } catch (error) {
+      console.log('Sorry, something went wrong...');
+      console.log(error);
+    }
   },
 
   renderRequestProcess(callback, buttonPressed) {

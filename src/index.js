@@ -10,7 +10,6 @@ function onFormSubmit(event) {
   toInitialState();
 
   const searchQuery = event.currentTarget.searchQuery.value.trim();
-
   if (!searchQuery) {
     return;
   }
@@ -27,15 +26,15 @@ function onButtonClick() {
 function onSuccess({ hits, totalHits } = {}) {
   galleryMarkup.renderMarkup(hits);
 
-  const endOfList = galleryMarkup.getCurrentLength() === totalHits;
+  const isEndOfList = galleryMarkup.getCurrentLength() === totalHits;
 
   messages.callRightMessage({
     errorCondition: !hits.length,
     successValue: totalHits,
-    endOfListCondition: endOfList,
+    endOfListCondition: isEndOfList,
   });
 
-  loadMoreButton.check(endOfList);
+  loadMoreButton.switchAvailable(isEndOfList);
 }
 
 function toInitialState() {
