@@ -1,7 +1,5 @@
-import { Notify } from 'notiflix';
-import 'notiflix/dist/notiflix-3.2.5.min.css';
-
 import request from './js/request-service';
+import messages from './js/messages';
 import { formEl, galleryMarkup, loadMoreButton, submitButton } from './js/refs';
 
 formEl.addEventListener('submit', onFormSubmit);
@@ -18,40 +16,31 @@ function onFormSubmit(event) {
   }
 
   request.setQuery(searchQuery);
-  request.renderRequestProcess(onFormSuccess, submitButton);
+  request.renderRequestProcess(onSuccess, submitButton);
 }
 
 function onButtonClick() {
   request.increasePage();
-  request.renderRequestProcess(onLoadMoreBtnSuccess, loadMoreButton);
+  request.renderRequestProcess(onSuccess, loadMoreButton);
 }
 
-function onFormSuccess({ hits, totalHits } = {}) {
-  if (hits.length <= 0) {
-    return Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-  }
-  formEl.searchQuery.value = '';
-  Notify.success(`Hooray! We found ${totalHits} images.`);
-
-  galleryMarkup.renderMarkup(hits);
-  loadMoreButton.show();
-}
-
-function onLoadMoreBtnSuccess({ hits, totalHits } = {}) {
+function onSuccess({ hits, totalHits } = {}) {
   galleryMarkup.renderMarkup(hits);
 
-  const photoCards = document.querySelectorAll('.photo-card');
+  const endOfList = galleryMarkup.getCurrentLength() === totalHits;
 
-  if (photoCards.length === totalHits) {
-    loadMoreButton.hide();
-    Notify.info("We're sorry, but you've reached the end of search results.");
-  }
+  messages.callRightMessage({
+    errorCondition: !hits.length,
+    successValue: totalHits,
+    endOfListCondition: endOfList,
+  });
+
+  loadMoreButton.check(endOfList);
 }
 
 function toInitialState() {
   galleryMarkup.clearMarkup();
   loadMoreButton.hide();
   request.allReset();
+  messages.reset();
 }

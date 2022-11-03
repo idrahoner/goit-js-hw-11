@@ -3,15 +3,23 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const lightBox = new SimpleLightbox('.gallery a');
 
-export function markupGenerator(DOMelement) {
+export function createMarkupObj(DOMelement) {
   return {
     element: DOMelement,
+    nestedElements: DOMelement.children,
+
+    getCurrentLength() {
+      return this.nestedElements.length;
+    },
 
     clearMarkup() {
       this.element.innerHTML = '';
     },
 
     renderMarkup(array) {
+      if (!array.length) {
+        return;
+      }
       this.element.insertAdjacentHTML('beforeend', this.createGallery(array));
       lightBox.refresh();
     },
@@ -59,7 +67,7 @@ export function markupGenerator(DOMelement) {
   };
 }
 
-export function buttonGenerator(button) {
+export function createButtonObj(button) {
   return {
     element: button,
     content: button.textContent,
@@ -80,6 +88,14 @@ export function buttonGenerator(button) {
     unlock() {
       this.element.textContent = this.content;
       this.element.removeAttribute('disabled');
+    },
+
+    check(condition) {
+      if (condition) {
+        this.hide();
+      } else {
+        this.show();
+      }
     },
   };
 }
