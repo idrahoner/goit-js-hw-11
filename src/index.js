@@ -40,6 +40,6 @@ function onSuccess({ hits, totalHits } = {}) {
 function toInitialState() {
   galleryMarkup.clearMarkup();
   loadMoreButton.hide();
-  request.allReset();
+  request.reset();
   messages.reset();
 }

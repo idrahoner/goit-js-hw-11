@@ -18,17 +18,9 @@ export default {
     this.page += 1;
   },
 
-  resetPage() {
+  reset() {
     this.page = 1;
-  },
-
-  resetQuery() {
     this.query = '';
-  },
-
-  allReset() {
-    this.resetPage();
-    this.resetQuery();
   },
 
   getURL() {
@@ -40,18 +32,18 @@ export default {
   },
 
   async makeRequest() {
-    const { data } = await axios(this.getURL());
-    return data;
+    try {
+      const { data } = await axios(this.getURL());
+      return data;
+    } catch (error) {
+      console.log(error);
+      return { hits: [], totalHits: 0 };
+    }
   },
 
   async responseHandler(callback) {
-    try {
-      const response = await this.makeRequest();
-      callback(response);
-    } catch (error) {
-      console.log('Sorry, something went wrong...');
-      console.log(error);
-    }
+    const response = await this.makeRequest();
+    callback(response);
   },
 
   renderRequestProcess(callback, buttonPressed) {

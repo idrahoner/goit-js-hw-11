@@ -3,7 +3,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const lightBox = new SimpleLightbox('.gallery a');
 
-export function createMarkupObj(DOMelement) {
+export default function (DOMelement) {
   return {
     element: DOMelement,
     nestedElements: DOMelement.children,
