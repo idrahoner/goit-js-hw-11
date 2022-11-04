@@ -40,8 +40,8 @@ export default function (DOMelement) {
       } = element;
       return `
       <div class="photo-card">
-      <a href=${largeImageURL}>
-      <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" height="200" />
+      <a href=${largeImageURL} class="photo-card__thumb">
+      <img src="${webformatURL}" alt="${tags}" class="photo-card__image" loading="lazy" width="300" height="200" />
       </a>
       <div class="info">
       <p class="info-item">
