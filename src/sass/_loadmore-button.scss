@@ -1,0 +1,20 @@
+.load-more {
+  margin: 0 auto 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  min-width: 200px;
+  height: 60px;
+  border: none;
+  border-radius: 6px;
+
+  color: rgb(255, 255, 255);
+  background-color: rgb(78, 97, 182);
+
+  font-size: 24px;
+}
+
+.load-more:disabled {
+  color: rgb(244, 246, 254);
+  background-color: rgb(160, 172, 228);
+}
