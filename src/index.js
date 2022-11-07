@@ -48,7 +48,7 @@ async function renderResponse() {
 
     loadMoreButton.shouldBeDisplayed(isEndOfList);
   } catch (error) {
-    console.log(error);
+    messages.callFailure();
   }
 }
 
