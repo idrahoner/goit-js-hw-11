@@ -16,7 +16,7 @@ function onFormSubmit(event) {
 
   request.setQuery(searchQuery);
   submitButton.lock();
-  renderSubmit().finally(() => submitButton.unlock());
+  renderResponse().finally(() => submitButton.unlock());
 }
 
 function onButtonClick() {
@@ -32,36 +32,27 @@ function toInitialState() {
   messages.reset();
 }
 
-async function renderSubmit() {
+async function renderResponse() {
   try {
-    await renderResponse();
-    galleryEl.setCardHeight();
+    const { hits, totalHits } = await request.makeRequest();
+
+    galleryEl.renderMarkup(hits);
+
+    const isEndOfList = galleryEl.getCurrentLength() === totalHits;
+
+    messages.callRightMessage({
+      errorCondition: !hits.length,
+      successValue: totalHits,
+      endOfListCondition: isEndOfList,
+    });
+
+    loadMoreButton.shouldBeDisplayed(isEndOfList);
   } catch (error) {
     console.log(error);
   }
 }
 
 async function renderLoadMore() {
-  try {
-    await renderResponse();
-    galleryEl.scrollDown();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function renderResponse() {
-  const { hits, totalHits } = await request.makeRequest();
-
-  galleryEl.renderMarkup(hits);
-
-  const isEndOfList = galleryEl.getCurrentLength() === totalHits;
-
-  messages.callRightMessage({
-    errorCondition: !hits.length,
-    successValue: totalHits,
-    endOfListCondition: isEndOfList,
-  });
-
-  loadMoreButton.shouldBeDisplayed(isEndOfList);
+  await renderResponse();
+  galleryEl.scrollDown();
 }

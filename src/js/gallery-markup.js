@@ -7,7 +7,6 @@ export default function (DOMelement) {
   return {
     element: DOMelement,
     counter: 0,
-    cardHeight: 0,
 
     getCurrentLength() {
       return this.counter;
@@ -20,14 +19,14 @@ export default function (DOMelement) {
     },
 
     setCardHeight() {
-      const { height: cardHeight } =
-        this.element.firstElementChild.getBoundingClientRect();
       this.cardHeight = cardHeight;
     },
 
     scrollDown() {
+      const { height: cardHeight } =
+        this.element.firstElementChild.getBoundingClientRect();
       window.scrollBy({
-        top: this.cardHeight * 2,
+        top: cardHeight * 2,
         behavior: 'smooth',
       });
     },
