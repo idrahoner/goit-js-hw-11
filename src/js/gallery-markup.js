@@ -18,10 +18,6 @@ export default function (DOMelement) {
       this.cardHeight = 0;
     },
 
-    setCardHeight() {
-      this.cardHeight = cardHeight;
-    },
-
     scrollDown() {
       const { height: cardHeight } =
         this.element.firstElementChild.getBoundingClientRect();

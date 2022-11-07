@@ -7,7 +7,7 @@ export default {
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: true,
-  page: 10,
+  page: 1,
   per_page: 40,
 
   setQuery(newQuery) {
