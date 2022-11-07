@@ -16,7 +16,7 @@ function onFormSubmit(event) {
 
   request.setQuery(searchQuery);
   submitButton.lock();
-  renderResponse().finally(() => submitButton.unlock());
+  renderSubmit().finally(() => submitButton.unlock());
 }
 
 function onButtonClick() {
@@ -30,6 +30,16 @@ function toInitialState() {
   loadMoreButton.hide();
   request.reset();
   messages.reset();
+}
+
+async function renderSubmit() {
+  await renderResponse();
+  galleryEl.setCardHeight();
+}
+
+async function renderLoadMore() {
+  await renderResponse();
+  galleryEl.scrollDown();
 }
 
 async function renderResponse() {
@@ -46,9 +56,4 @@ async function renderResponse() {
   });
 
   loadMoreButton.shouldBeDisplayed(isEndOfList);
-}
-
-async function renderLoadMore() {
-  await renderResponse();
-  galleryEl.scrollDown();
 }
