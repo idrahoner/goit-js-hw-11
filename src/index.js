@@ -33,13 +33,21 @@ function toInitialState() {
 }
 
 async function renderSubmit() {
-  await renderResponse();
-  galleryEl.setCardHeight();
+  try {
+    await renderResponse();
+    galleryEl.setCardHeight();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function renderLoadMore() {
-  await renderResponse();
-  galleryEl.scrollDown();
+  try {
+    await renderResponse();
+    galleryEl.scrollDown();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function renderResponse() {

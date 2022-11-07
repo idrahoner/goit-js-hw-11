@@ -32,12 +32,7 @@ export default {
   },
 
   async makeRequest() {
-    try {
-      const { data } = await axios(this.getURL());
-      return data;
-    } catch (error) {
-      console.log(error);
-      return { hits: [], totalHits: 0 };
-    }
+    const { data } = await axios(this.getURL());
+    return data;
   },
 };
