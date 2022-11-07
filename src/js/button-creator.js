@@ -18,7 +18,7 @@ export default function (button) {
       this.element.removeAttribute('disabled');
     },
 
-    switchAvailable(condition) {
+    shouldBeDisplayed(condition) {
       if (condition) {
         this.hide();
       } else {

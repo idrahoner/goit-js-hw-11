@@ -12,9 +12,19 @@ export default function (DOMelement) {
       return this.counter;
     },
 
-    clearMarkup() {
+    resetMarkup() {
       this.element.innerHTML = '';
       this.counter = 0;
+    },
+
+    scrollDown() {
+      const { height: cardHeight } =
+        this.element.firstElementChild.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: 'smooth',
+      });
     },
 
     renderMarkup(array) {
