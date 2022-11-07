@@ -7,8 +7,8 @@ export default {
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: true,
-  page: 1,
-  per_page: 5,
+  page: 10,
+  per_page: 20,
 
   setQuery(newQuery) {
     this.query += newQuery;
@@ -39,17 +39,5 @@ export default {
       console.log(error);
       return { hits: [], totalHits: 0 };
     }
-  },
-
-  async responseHandler(callback) {
-    const response = await this.makeRequest();
-    callback(response);
-  },
-
-  renderRequestProcess(callback, buttonPressed) {
-    buttonPressed.lock();
-    this.responseHandler(callback).finally(() => {
-      buttonPressed.unlock();
-    });
   },
 };

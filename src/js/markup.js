@@ -6,14 +6,15 @@ const lightBox = new SimpleLightbox('.gallery a');
 export default function (DOMelement) {
   return {
     element: DOMelement,
-    nestedElements: DOMelement.children,
+    counter: 0,
 
     getCurrentLength() {
-      return this.nestedElements.length;
+      return this.counter;
     },
 
     clearMarkup() {
       this.element.innerHTML = '';
+      this.counter = 0;
     },
 
     renderMarkup(array) {
@@ -25,7 +26,9 @@ export default function (DOMelement) {
     },
 
     createGallery(array) {
-      return array.map(this.createCard).join('');
+      const cards = array.map(this.createCard);
+      this.counter += cards.length;
+      return cards.join('');
     },
 
     createCard(element) {

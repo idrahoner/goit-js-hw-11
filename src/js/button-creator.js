@@ -1,7 +1,6 @@
 export default function (button) {
   return {
     element: button,
-    // content: button.firstElementChild,
 
     show() {
       this.element.classList.remove('is-hidden');
@@ -12,13 +11,10 @@ export default function (button) {
     },
 
     lock() {
-      // this.element.innerHTML = 'Loading...';
       this.element.disabled = 'true';
     },
 
     unlock() {
-      // console.log(this.content);
-      // this.element.innerHTML = this.content;
       this.element.removeAttribute('disabled');
     },
 
