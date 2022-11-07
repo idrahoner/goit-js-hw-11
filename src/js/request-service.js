@@ -8,7 +8,7 @@ export default {
   orientation: 'horizontal',
   safesearch: true,
   page: 10,
-  per_page: 20,
+  per_page: 40,
 
   setQuery(newQuery) {
     this.query += newQuery;
