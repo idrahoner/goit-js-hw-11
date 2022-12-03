@@ -3,6 +3,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const lightBox = new SimpleLightbox('.gallery a');
 
+// test git
+
 export default function (DOMelement) {
   return {
     element: DOMelement,
